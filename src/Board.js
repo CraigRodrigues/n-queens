@@ -86,7 +86,9 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      let board = this.rows();
+
+      return board.some((row, i) => this.hasRowConflictAt(i));
     },
 
 
