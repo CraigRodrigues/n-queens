@@ -79,7 +79,9 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      let board = this.rows();
+
+      return board[rowIndex].reduce((a, b) => a + b) > 1;
     },
 
     // test if any rows on this board contain conflicts
