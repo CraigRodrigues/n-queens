@@ -101,6 +101,10 @@
       let board = this.rows();
       let count = 0;
 
+      if (board.length === 0) {
+        return false;
+      }
+
       for (var i = 0; i < board.length; i++) {
         if (board[i][colIndex] === 1) {
           count++;
@@ -115,6 +119,10 @@
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
       let board = this.rows();
+
+      if (board.length === 0) {
+        return false;
+      }
 
       for (var i = 0; i < board[0].length; i++) {
         if (this.hasColConflictAt(board[0][i])) {
