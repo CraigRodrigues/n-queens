@@ -61,9 +61,9 @@ window.findNQueensSolution = function(n) {
   debugger;
   let board = new Board({n: n});
   let pieces = 0;
-  let solution; 
+  let solution;
 
-  if (n === 0) {
+  if (n === 0 || n === 2 || n === 3) {
     return board.rows();
   }
 
@@ -77,7 +77,11 @@ window.findNQueensSolution = function(n) {
       if (solution !== undefined) {
         return;
       } else {
-        solution = board.rows().slice();
+        solution = board.rows();
+        solution = JSON.stringify(solution);
+        solution = JSON.parse(solution);
+        // solution = board.rows().slice();
+        console.log(JSON.stringify(solution));
         return;
       }
     }
