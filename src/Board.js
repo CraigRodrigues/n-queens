@@ -134,27 +134,15 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       let board = this.rows();
       let n = this.get('n');
-      let j = Math.abs(majorDiagonalColumnIndexAtFirstRow);
+      let j = majorDiagonalColumnIndexAtFirstRow;
       let count = 0;
 
-      for (var i = 0; i < n; i++) {
-        if (board[i][j] === 1) {
+      for (var i = 0; i < n; i++, j++) {
+        if (!!board[i][j] && board[i][j] === 1) {
           count++;
           if (count > 1) {
             return true;
           }
-          j++;
-        }
-      }
-
-      count = 0;
-      for (var i = 0; i < n; i++) {
-        if (board[j][i] === 1) {
-          count++;
-          if (count > 1) {
-            return true;
-          }
-          j++;
         }
       }
 
@@ -166,7 +154,7 @@
       let board = this.rows();
       let n = this.get('n');
 
-      for (let i = 0; i < n; i++) {
+      for (let i = 1 - n; i < n; i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
         }
