@@ -16,7 +16,13 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
+  let board = new Board({n: n});
+
+  for (let i = 0, j = 0; i < n; i++, j++) {
+    board.togglePiece(i, j);
+  }
+
+  let solution = board.rows();
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
@@ -24,7 +30,27 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  let board = new Board({n: n});
+  let pieces = 0;
+  let solutionCount = 0;
+
+  debugger;
+  let findSolutions = function (row, pieces, board) {
+    if (pieces === n) {
+      solutionCount++;
+      return board;
+    }
+    for (let i = 0; i < n; i++) {
+      board.togglePiece(row, i);
+      if (board.hasRowConflictAt(row) || board.hasColConflictAt(i)) {
+        board.togglePiece(row, i);
+      } else {
+        findSolutions(row + 1, pieces + 1, board); 
+      }
+    } 
+  };
+
+  findSolutions(0, pieces, board);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
