@@ -33,6 +33,7 @@ window.countNRooksSolutions = function(n) {
   let board = new Board({n: n});
   let pieces = 0;
   let solutionCount = 0;
+  let colTracker = {};
 
   let findSolutions = function (row, pieces) {
     if (pieces === n) {
@@ -41,11 +42,19 @@ window.countNRooksSolutions = function(n) {
     }
     for (let i = 0; i < n; i++) {
       board.togglePiece(row, i);
-      if (board.hasRowConflictAt(row) || board.hasColConflictAt(i)) {
+      // if (board.hasRowConflictAt(row) || board.hasColConflictAt(i)) {
+      //   board.togglePiece(row, i);
+      // } else {
+      //   findSolutions(row + 1, pieces + 1); 
+      //   board.togglePiece(row, i);
+      // }
+      if (colTracker[i]) {
         board.togglePiece(row, i);
       } else {
-        findSolutions(row + 1, pieces + 1); 
+        colTracker[i] = true;
+        findSolutions(row + 1, pieces + 1);
         board.togglePiece(row, i);
+        colTracker[i] = false;
       }
     } 
   };
