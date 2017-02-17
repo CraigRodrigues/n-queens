@@ -42,12 +42,7 @@ window.countNRooksSolutions = function(n) {
     }
     for (let i = 0; i < n; i++) {
       board.togglePiece(row, i);
-      // if (board.hasRowConflictAt(row) || board.hasColConflictAt(i)) {
-      //   board.togglePiece(row, i);
-      // } else {
-      //   findSolutions(row + 1, pieces + 1); 
-      //   board.togglePiece(row, i);
-      // }
+      
       if (colTracker[i]) {
         board.togglePiece(row, i);
       } else {
@@ -114,6 +109,9 @@ window.countNQueensSolutions = function(n) {
   let board = new Board({n: n});
   let pieces = 0;
   let solutionCount = 0;
+  let colTracker = {};
+  let majorDiag = {};
+  let minorDiag = {};
 
   let findSolutions = function (row, pieces) {
     if (pieces === n) {
@@ -126,11 +124,20 @@ window.countNQueensSolutions = function(n) {
         i++;
       }
       board.togglePiece(row, i);
-      if (board.hasAnyQueenConflictsOn(row, i)) {
+      let majorColumnIndex = board._getFirstRowColumnIndexForMajorDiagonalOn(row, i);
+      let minorColumnIndex = board._getFirstRowColumnIndexForMinorDiagonalOn(row, i);
+
+      if (majorDiag[i - row] || minorDiag[i + row] || colTracker[i]) {
         board.togglePiece(row, i);
       } else {
+        colTracker[i] = true;
+        majorDiag[i - row] = true;
+        minorDiag[i + row] = true;
         findSolutions(row + 1, pieces + 1); 
         board.togglePiece(row, i);
+        colTracker[i] = false;
+        majorDiag[i - row] = false;
+        minorDiag[i + row] = false;
       }
     } 
   };
