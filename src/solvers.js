@@ -65,6 +65,9 @@ window.findNQueensSolution = function(n) {
   let board = new Board({n: n});
   let pieces = 0;
   let solution;
+  let colTracker = {};
+  let majorDiag = {};
+  let minorDiag = {};
 
   if (n === 0 || n === 2 || n === 3) {
     return board.rows();
@@ -89,12 +92,25 @@ window.findNQueensSolution = function(n) {
     }
 
     for (let i = 0; i < n; i++) {
+      // IF at (0, 0) skip this position
+      if (n % 2 === 0 && row === 0 && i === 0 && n < 8) {
+        i++;
+      }
       board.togglePiece(row, i);
-      if (board.hasAnyQueenConflictsOn(row, i)) {
+      let majorColumnIndex = board._getFirstRowColumnIndexForMajorDiagonalOn(row, i);
+      let minorColumnIndex = board._getFirstRowColumnIndexForMinorDiagonalOn(row, i);
+
+      if (majorDiag[i - row] || minorDiag[i + row] || colTracker[i]) {
         board.togglePiece(row, i);
       } else {
+        colTracker[i] = true;
+        majorDiag[i - row] = true;
+        minorDiag[i + row] = true;
         findSolutions(row + 1, pieces + 1); 
         board.togglePiece(row, i);
+        colTracker[i] = false;
+        majorDiag[i - row] = false;
+        minorDiag[i + row] = false;
       }
     } 
   };
